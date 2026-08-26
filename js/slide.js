@@ -1,22 +1,40 @@
-// export default class Slide {
-//   constructor(element) {
-//     this.element = document.querySelector(element);
+export default class Slide {
+  constructor(slide, wrapper) {
+    this.slide = document.querySelector(slide);
+    this.wrapper = document.querySelector(wrapper);
+  }
 
-//     this.changeColor = this.changeColor.bind(this);
-//   }
+  onStart(e) {
+    e.preventDefault();
+    console.log("mousedown");
+    this.wrapper.addEventListener("mousemove", this.onMove);
+  }
 
-//   changeColor() {
-//     this.element.style.color = "blue";
-//   }
+  onMove(e) {
+    console.log(this.slide);
+  }
 
-//   addSlideEvents() {
-//     this.element.addEventListener("click", this.changeColor);
-//   }
+  onEnd(e) {
+    console.log("soltou o mouse");
+    this.wrapper.removeEventListener("mousemove", this.onMove);
+  }
 
-//   init() {
-//     if (this.element) {
-//       this.addSlideEvents();
-//     }
-//     return this;
-//   }
-// }
+  addSlideEvents() {
+    this.wrapper.addEventListener("mousedown", this.onStart);
+    this.wrapper.addEventListener("mouseup", this.onEnd);
+  }
+
+  bindEvents() {
+    this.onStart = this.onStart.bind(this);
+    this.onMove = this.onMove.bind(this);
+    this.onEnd = this.onEnd.bind(this);
+  }
+
+  init() {
+    if (this.slide && this.wrapper) {
+      this.bindEvents();
+      this.addSlideEvents();
+    }
+    return this;
+  }
+}
